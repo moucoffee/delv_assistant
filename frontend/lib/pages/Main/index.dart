@@ -58,6 +58,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FA), // 设置全局背景色为浅灰色
       body: IndexedStack(index: _currentIndex, children: _getShowWidget()),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(12), // 距离屏幕边缘的间距
@@ -74,7 +75,8 @@ class _MainPageState extends State<MainPage> {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30), // 剪裁内部内容以适应圆角
-          child: BottomNavigationBar(
+          child: 
+          BottomNavigationBar(
             items: _getTabBarWidget(),
             showUnselectedLabels: true,
             selectedItemColor: Colors.blue, // 建议选中颜色改为蓝色，更有区分度

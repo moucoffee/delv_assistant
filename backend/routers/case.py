@@ -14,7 +14,7 @@ async def get_cases(
     search: Optional[str] = Query(None, description="搜索关键词"),
     db: Session = Depends(get_db)
 ):
-    query = db.query(Case) //查询Case表
+    query = db.query(Case) #查询Case表
     
     if user_id:
         query = query.filter(Case.user_id == user_id)
