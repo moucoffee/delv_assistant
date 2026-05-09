@@ -8,4 +8,5 @@ class GlobalContants {
 //存放请求地址接口变量s
 class HttpContants {
   static const String CASE_LIST = "/cases"; //获取当前用户的案件信息
+  static const String CASE_DETAIL = "/cases/"; // 注意：这里加个斜杠，方便拼接 ID
 }

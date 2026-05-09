@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MySearch extends StatefulWidget {
-  MySearch({Key? key}) : super(key: key);
+  final Function(String)? onChanged; // 添加回调函数
+
+  MySearch({Key? key, this.onChanged}) : super(key: key);
 
   @override
   _MySearchState createState() => _MySearchState();
@@ -9,6 +11,12 @@ class MySearch extends StatefulWidget {
 
 class _MySearchState extends State<MySearch> {
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   Widget _getLeftWidget() {
     return Padding(
@@ -21,17 +29,18 @@ class _MySearchState extends State<MySearch> {
     return Expanded(
       child: TextFormField(
         controller: _controller,
-        
         decoration: InputDecoration(
           hintText: "搜索案件标题、当事人",
           hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
           border: InputBorder.none,
-          isDense: true, // 关键属性：让输入框更紧凑
-          contentPadding: EdgeInsets.zero, 
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
         ),
         onChanged: (value) {
-          // 当内容改变时，可以在这里处理，或者直接通过 _controller.text 获取
-          print("当前搜索内容: $value");
+          // 触发父组件传进来的回调
+          if (widget.onChanged != null) {
+            widget.onChanged!(value);
+          }
         },
       ),
     );

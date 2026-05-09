@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBar(
             items: _getTabBarWidget(),
             showUnselectedLabels: true,
-            selectedItemColor: Colors.blue, // 建议选中颜色改为蓝色，更有区分度
+            selectedItemColor: Colors.blue, 
             unselectedItemColor: Colors.black,
             onTap: (int index) {
               _currentIndex = index;

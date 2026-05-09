@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class Case {
   String id;
   String user_id;
+  String title;
   String case_type;
   String status;
   String create_at;
@@ -14,6 +15,7 @@ class Case {
   Case({
     required this.id,
     required this.user_id,
+    required this.title,
     required this.case_type,
     required this.status,
     required this.create_at,
@@ -27,6 +29,7 @@ class Case {
     return Case(
       id: json["id"]?.toString() ?? "",
       user_id: json["user_id"]?.toString() ?? "",
+      title: json["title"]?.toString() ?? "",
       case_type: json["case_type"]?.toString() ?? "",
       status: json["status"]?.toString() ?? "",
       create_at: json["created_at"]?.toString() ?? "", // 修改为 created_at
@@ -34,6 +37,47 @@ class Case {
       material_count: json["material_count"]?.toString() ?? "",
       total_file_size: json["total_file_size"]?.toString() ?? "",
       phone: json["phone"]?.toString() ?? "",
+    );
+  }
+}
+
+class CaseDetail {
+  String id;
+  String user_id;
+  String title;
+  String parties;
+  String phone;
+  String case_type;
+  String status;
+  String amount;
+  String description;
+  Map<String, dynamic> material_stats;
+
+  CaseDetail({
+    required this.id,
+    required this.user_id,
+    required this.title,
+    required this.parties,
+    required this.phone,
+    required this.case_type,
+    required this.status,
+    required this.amount,
+    required this.description,
+    required this.material_stats,
+  });
+
+  factory CaseDetail.fromJSON(Map<String, dynamic> json) {
+    return CaseDetail(
+      id: json["id"]?.toString() ?? "",
+      user_id: json["user_id"]?.toString() ?? "",
+      title: json["title"]?.toString() ?? "",
+      parties: json["parties"]?.toString() ?? "",
+      phone: json["phone"]?.toString() ?? "",
+      case_type: json["case_type"]?.toString() ?? "",
+      status: json["status"]?.toString() ?? "",
+      amount: json["amount"]?.toString() ?? "0",
+      description: json["description"]?.toString() ?? "",
+      material_stats: json["material_stats"] ?? {},
     );
   }
 }

@@ -16,4 +16,4 @@ async def get_user_info(db: Session = Depends(get_db)):
         return BaseResponse.error(msg="用户不存在")
     
     # 转换成 UserInfo schema
-    return BaseResponse.success(result=[UserInfo.from_orm(user)])
+    return BaseResponse.success(result=UserInfo.from_orm(user))

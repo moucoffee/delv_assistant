@@ -47,4 +47,4 @@ async def get_case_detail(case_id: int, db: Session = Depends(get_db)):
         "notice": 0
     }
     #转换orm对象传入列表
-    return BaseResponse.success(result=[CaseDetail.from_orm(case_obj)])
+    return BaseResponse.success(result=CaseDetail.from_orm(case_obj))

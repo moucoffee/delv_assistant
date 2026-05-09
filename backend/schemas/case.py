@@ -1,3 +1,5 @@
+import string
+from turtle import title
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
@@ -5,6 +7,7 @@ from datetime import datetime
 class CaseItem(BaseModel):
     id: int
     user_id: int          # 关联的用户ID
+    title: str            # 案件标题
     case_type: str        # 案件类型：刑事案件、民事案件等
     status: str           # 状态：新建、结案等
     created_at: str       # 创建时间
