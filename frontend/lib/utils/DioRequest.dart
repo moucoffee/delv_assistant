@@ -47,6 +47,13 @@ class DioRequest {
     return _handleResponse(_dio.post(url, data: data));
   }
 
+  Future<dynamic> uploadFile (String url, {required MultipartFile file}) {
+    FormData formData = FormData.fromMap({
+      "file": file,
+    });
+    return _handleResponse(_dio.post(url, data: formData));
+  }
+
   Future<dynamic> _handleResponse(Future<Response<dynamic>> task) async {
     try {
       Response<dynamic> res = await task;

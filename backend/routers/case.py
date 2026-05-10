@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List, Optional
 from schemas.case import CaseItem, CaseDetail
 from schemas.base import BaseResponse
 from config.database import get_db
 from models.case import Case
+from models.material import Material
 
 router = APIRouter(prefix="/cases", tags=["Cases"])
 
@@ -39,12 +41,18 @@ async def get_case_detail(case_id: int, db: Session = Depends(get_db)):
     if not case_obj:
         return BaseResponse.error(msg="案件不存在")
     
-    # 模拟材料统计逻辑
-    case_obj.material_stats = {
-        "case": case_obj.material_count,
+    material_stats = {
+        "case": 0,
         "evidence": 0,
         "payment": 0,
         "notice": 0
     }
-    #转换orm对象传入列表
+
+    materials = db.query(Material).filter(Material.case_id == case_id).all()
+    for mat in materials:
+        if mat.category in material_stats:
+            material_stats[mat.category] += 1
+
+    case_obj.material_stats = material_stats
+
     return BaseResponse.success(result=CaseDetail.from_orm(case_obj))

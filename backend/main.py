@@ -1,15 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import user, case
+from fastapi.staticfiles import StaticFiles
+from routers import user, case, material, upload
 from config.database import engine, Base
-from models import user as user_model, case as case_model
+from models import user as user_model, case as case_model, material as material_model
 
-# 创建数据库表
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="AI Assistant Backend")
 
-# 添加 CORS 中间件
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], # 允许所有来源，开发环境可以这样设置
@@ -21,6 +22,8 @@ app.add_middleware(
 # 包含模块路由
 app.include_router(user.router)
 app.include_router(case.router)
+app.include_router(material.router)
+app.include_router(upload.router)
 
 @app.get("/")
 async def root():

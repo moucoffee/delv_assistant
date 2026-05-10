@@ -81,3 +81,47 @@ class CaseDetail {
     );
   }
 }
+
+class Material {
+  String id;
+  String case_id;
+  String user_id;
+  String category; // case, evidence, payment, notice
+  String name;
+  String? file_type;
+  String file_size;
+  String? file_url;
+  String? content;
+  String created_at;
+  String? updated_at;
+
+  Material({
+    required this.id,
+    required this.case_id,
+    required this.user_id,
+    required this.category,
+    required this.name,
+    this.file_type,
+    required this.file_size,
+    this.file_url,
+    this.content,
+    required this.created_at,
+    this.updated_at,
+  });
+
+  factory Material.fromJSON(Map<String, dynamic> json) {
+    return Material(
+      id: json["id"]?.toString() ?? "",
+      case_id: json["case_id"]?.toString() ?? "",
+      user_id: json["user_id"]?.toString() ?? "",
+      category: json["category"]?.toString() ?? "",
+      name: json["name"]?.toString() ?? "",
+      file_type: json["file_type"]?.toString(),
+      file_size: json["file_size"]?.toString() ?? "0B",
+      file_url: json["file_url"]?.toString(),
+      content: json["content"]?.toString(),
+      created_at: json["created_at"]?.toString() ?? "",
+      updated_at: json["updated_at"]?.toString(),
+    );
+  }
+}
