@@ -9,6 +9,11 @@ class UserInfo(BaseModel):
     coins: int = 0
     trial_days: int = 0
     case_count: int = 0
+    token: Optional[str] = None
 
     class Config:
         from_attributes = True
+
+class LoginRequest(BaseModel):
+    phone: str
+    password: str

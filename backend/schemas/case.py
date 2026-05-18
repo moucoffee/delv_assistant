@@ -34,3 +34,12 @@ class CaseDetail(BaseModel):
 
     class Config:
         from_attributes = True
+
+class CaseUpdate(BaseModel):
+    title: Optional[str] = None
+    parties: Optional[str] = None
+    phone: Optional[str] = None
+    case_type: Optional[str] = None
+    status: Optional[str] = None
+    amount: Optional[float] = None
+    description: Optional[str] = None

@@ -1,6 +1,7 @@
 from config.database import SessionLocal, engine, Base
 from models.user import User
 from models.case import Case
+from utils.auth import get_password_hash
 
 def init_db():
     # 创建所有表
@@ -18,6 +19,7 @@ def init_db():
     user1 = User(
         username="张律师",
         phone="13800138000",
+        password_hash=get_password_hash("123456"),
         avatar="https://api.dicebear.com/7.x/avataaars/svg?seed=Zhang",
         coins=500,
         trial_days=30
@@ -25,6 +27,7 @@ def init_db():
     user2 = User(
         username="李律师",
         phone="13900139000",
+        password_hash=get_password_hash("123456"),
         avatar="https://api.dicebear.com/7.x/avataaars/svg?seed=Li",
         coins=200,
         trial_days=15
@@ -67,6 +70,8 @@ def init_db():
     db.commit()
     
     print("数据库初始化完成！已创建测试用户和案件。")
+    print("测试账号 1: 手机号: 13800138000, 密码: 123456")
+    print("测试账号 2: 手机号: 13900139000, 密码: 123456")
     db.close()
 
 if __name__ == "__main__":

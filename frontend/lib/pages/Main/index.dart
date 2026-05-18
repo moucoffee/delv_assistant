@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/user.dart';
 import 'package:frontend/pages/Case/index.dart';
 import 'package:frontend/pages/Mine/index.dart';
 import 'package:frontend/pages/Template_library/index.dart';
 import 'package:frontend/pages/Tools/index.dart';
+import 'package:frontend/routes/index.dart';
+import 'package:frontend/stores/TokenManager.dart';
+import 'package:frontend/stores/UserController.dart';
+import 'package:get/get.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -47,6 +52,19 @@ class _MainPageState extends State<MainPage> {
         label: _tabList[index]["text"],
       );
     });
+  }
+
+  @override
+  void initState() { 
+    super.initState();
+    _initUser();
+  }
+  final UserController _userController = Get.find();
+  _initUser() async{
+    if(tokenManager.getToken().isNotEmpty)
+    {
+      _userController.updateUserInfo(await getUserInfoAPI());
+    }
   }
 
   int _currentIndex = 0;

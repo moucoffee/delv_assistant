@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/contants/index.dart';
+import 'package:frontend/stores/TokenManager.dart';
 
 class DioRequest {
   final _dio = Dio();
@@ -18,6 +19,13 @@ class DioRequest {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (request, handler) {
+          //注入token
+          if(tokenManager.getToken().isNotEmpty)
+          {
+            request.headers = {
+              "Authorization" : "Bearer ${tokenManager.getToken()}",
+            };
+          }
           handler.next(request);
         },
         onResponse: (response, handler) {
@@ -45,6 +53,10 @@ class DioRequest {
 
   Future<dynamic> post (String url, {Map<String, dynamic>? data}) {
     return _handleResponse(_dio.post(url, data: data));
+  }
+
+  Future<dynamic> put (String url, {Map<String, dynamic>? data}) {
+    return _handleResponse(_dio.put(url, data: data));
   }
 
   Future<dynamic> uploadFile (String url, {required MultipartFile file}) {
