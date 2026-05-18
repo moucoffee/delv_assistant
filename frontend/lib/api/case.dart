@@ -19,6 +19,14 @@ Future<vm.CaseDetail> updateCaseAPI(dynamic caseId, Map<String, dynamic> data) a
   return vm.CaseDetail.fromJSON(response as Map<String, dynamic>);
 }
 
+Future<vm.CaseDetail> createCaseAPI(vm.CaseCreate caseData) async {
+  final response = await dioRequest.post(
+    HttpContants.CASE_CREATE,
+    data: caseData.toJson(),
+  );
+  return vm.CaseDetail.fromJSON(response as Map<String, dynamic>);
+}
+
 
 
 

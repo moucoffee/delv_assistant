@@ -32,10 +32,10 @@ class Case {
       title: json["title"]?.toString() ?? "",
       case_type: json["case_type"]?.toString() ?? "",
       status: json["status"]?.toString() ?? "",
-      create_at: json["created_at"]?.toString() ?? "", // 修改为 created_at
+      create_at: json["created_at"]?.toString() ?? "",
       parties: json["parties"]?.toString() ?? "",
-      material_count: json["material_count"]?.toString() ?? "",
-      total_file_size: json["total_file_size"]?.toString() ?? "",
+      material_count: json["material_count"]?.toString() ?? "0",
+      total_file_size: json["total_file_size"]?.toString() ?? "0B",
       phone: json["phone"]?.toString() ?? "",
     );
   }
@@ -123,5 +123,37 @@ class Material {
       created_at: json["created_at"]?.toString() ?? "",
       updated_at: json["updated_at"]?.toString(),
     );
+  }
+}
+
+class CaseCreate {
+  String title;
+  String parties;
+  String phone;
+  String case_type;
+  String status;
+  double amount;
+  String? description;
+
+  CaseCreate({
+    required this.title,
+    required this.parties,
+    required this.phone,
+    required this.case_type,
+    this.status = "新建",
+    this.amount = 0.0,
+    this.description,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      "title": title,
+      "parties": parties,
+      "phone": phone,
+      "case_type": case_type,
+      "status": status,
+      "amount": amount,
+      "description": description,
+    };
   }
 }

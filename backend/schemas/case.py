@@ -43,3 +43,12 @@ class CaseUpdate(BaseModel):
     status: Optional[str] = None
     amount: Optional[float] = None
     description: Optional[str] = None
+
+class CaseCreate(BaseModel):
+    title: str
+    parties: str
+    phone: str
+    case_type: str
+    status: str = "新建"
+    amount: float = 0.0
+    description: Optional[str] = None

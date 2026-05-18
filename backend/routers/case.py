@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import List, Optional
-from schemas.case import CaseItem, CaseDetail, CaseUpdate
+from schemas.case import CaseItem, CaseDetail, CaseUpdate, CaseCreate
 from schemas.base import BaseResponse
 from config.database import get_db
 from models.case import Case
@@ -12,7 +12,38 @@ from utils.deps import get_current_user
 
 router = APIRouter(prefix="/cases", tags=["案件管理"])
 
-@router.get("", response_model=BaseResponse[CaseItem])
+@router.post("", response_model=BaseResponse[CaseDetail])
+async def create_case(
+    case_data: CaseCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    new_case = Case(
+        user_id=current_user.id,
+        title=case_data.title,
+        parties=case_data.parties,
+        phone=case_data.phone,
+        case_type=case_data.case_type,
+        status=case_data.status,
+        amount=case_data.amount,
+        description=case_data.description,
+        material_count=0,
+        total_file_size="0B"
+    )
+    
+    db.add(new_case)
+    db.commit()
+    db.refresh(new_case)
+    
+    new_case.material_stats = {
+        "case": 0,
+        "evidence": 0,
+        "payment": 0,
+        "notice": 0
+    }
+    return BaseResponse.success(result=CaseDetail.from_orm(new_case))
+
+@router.get("", response_model=BaseResponse[List[CaseItem]])
 async def get_cases(
     search: Optional[str] = Query(None, description="搜索关键词"),
     current_user: User = Depends(get_current_user),
@@ -28,8 +59,33 @@ async def get_cases(
         )
         
     cases = query.all()
-    # 格式化时间为字符串以匹配 schema
+    
+    # 为每个案件计算材料数量和文件总大小
     for c in cases:
+        materials = db.query(Material).filter(Material.case_id == c.id).all()
+        c.material_count = len(materials)
+        
+        total_bytes = 0
+        for mat in materials:
+            size_str = mat.file_size
+            if size_str.endswith('KB'):
+                total_bytes += float(size_str[:-2]) * 1024
+            elif size_str.endswith('MB'):
+                total_bytes += float(size_str[:-2]) * 1024 * 1024
+            elif size_str.endswith('GB'):
+                total_bytes += float(size_str[:-2]) * 1024 * 1024 * 1024
+            elif size_str.endswith('B'):
+                total_bytes += float(size_str[:-1])
+        
+        if total_bytes >= 1024 * 1024 * 1024:
+            c.total_file_size = f"{total_bytes / (1024 * 1024 * 1024):.2f}GB"
+        elif total_bytes >= 1024 * 1024:
+            c.total_file_size = f"{total_bytes / (1024 * 1024):.2f}MB"
+        elif total_bytes >= 1024:
+            c.total_file_size = f"{total_bytes / 1024:.2f}KB"
+        else:
+            c.total_file_size = f"{total_bytes}B"
+        
         c.created_at = c.created_at.strftime("%Y-%m-%d %H:%M")
         
     return BaseResponse.success(result=cases)

@@ -10,6 +10,7 @@ class GlobalContants {
 class HttpContants {
   static const String CASE_LIST = "/cases"; //获取当前用户的案件信息
   static const String CASE_DETAIL = "/cases/"; 
+  static const String CASE_CREATE = "/cases"; // 创建案件
   static const String UPLOAD_FILE = "/upload"; // 文件上传接口
   static const String MATERIALS = "/materials"; // 材料CRUD接口
   static const String USER_ME = "/user/me"; // 获取当前用户信息
