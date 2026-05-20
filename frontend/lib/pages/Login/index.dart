@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         SizedBox(height: 8),
         Text(
-          "赖律AI助理",
+          "AI助理",
           style: TextStyle(
             fontSize: 20,
             color: Color(0xFF64748B),
@@ -338,7 +338,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         SizedBox(height: 4),
         Text(
-          "后起智能 版权所有 © 2026",
+          "版权所有 © 2026",
           style: TextStyle(
             fontSize: 12,
             color: Color(0xFF94A3B8),

@@ -59,6 +59,10 @@ class DioRequest {
     return _handleResponse(_dio.put(url, data: data));
   }
 
+  Future<dynamic> delete (String url, {Map<String, dynamic>? data}) {
+    return _handleResponse(_dio.delete(url, data: data));
+  }
+
   Future<dynamic> uploadFile (String url, {required MultipartFile file}) {
     FormData formData = FormData.fromMap({
       "file": file,

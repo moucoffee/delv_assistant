@@ -4,13 +4,15 @@ import 'package:frontend/viewmodels/case.dart' as vm;
 class CaseList extends StatefulWidget {
   final List<vm.Case> cases;
   final bool isLoading;
-  final bool isSearching; // 新增：是否处于搜索状态
+  final bool isSearching;
+  final Future<void> Function()? onRefresh;
 
   CaseList({
     Key? key,
     required this.cases,
     required this.isLoading,
     this.isSearching = false,
+    this.onRefresh,
   }) : super(key: key);
 
   @override
@@ -135,9 +137,11 @@ class _CaseListState extends State<CaseList> {
         (BuildContext context, int index) {
           final item = widget.cases[index];
           return GestureDetector(
-            onTap: () {
-              // 点击跳转到详情页
-              Navigator.pushNamed(context, "/casedetail", arguments: item.id);
+            onTap: () async {
+              await Navigator.pushNamed(context, "/casedetail", arguments: item.id);
+              if (widget.onRefresh != null) {
+                await widget.onRefresh!();
+              }
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

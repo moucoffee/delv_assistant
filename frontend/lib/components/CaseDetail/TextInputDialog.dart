@@ -101,6 +101,7 @@ class _TextInputDialogState extends State<TextInputDialog> {
                     ),
                     DropdownButton<String>(
                       value: _selectedCategory,
+                      dropdownColor: Color(0xFFF5F7FA),
                       items: widget.categories.map((cat) {
                         return DropdownMenuItem(
                           value: cat["key"],

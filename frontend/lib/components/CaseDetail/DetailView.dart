@@ -228,7 +228,6 @@ class _DetailViewState extends State<DetailView> {
                     ),
                   ),
                   const Divider(height: 1, color: Color(0xFFE5E5E5)),
-                  // 案件信息主体部分
                   _buildItem("案件标题", data.title ?? ""),
                   _buildItem("当事人", data.parties ?? ""),
                   _buildItem("联系电话", data.phone ?? ""),

@@ -149,3 +149,20 @@ async def update_case(
     case_obj.material_stats = material_stats
     
     return BaseResponse.success(result=CaseDetail.from_orm(case_obj))
+
+@router.delete("/{case_id}", response_model=BaseResponse[None])
+async def delete_case(
+    case_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    case_obj = db.query(Case).filter(Case.id == case_id, Case.user_id == current_user.id).first()
+    if not case_obj:
+        raise HTTPException(status_code=404, detail="案件不存在")
+    
+    db.query(Material).filter(Material.case_id == case_id).delete()
+    
+    db.delete(case_obj)
+    db.commit()
+    
+    return BaseResponse.success(result=None, msg="删除成功")

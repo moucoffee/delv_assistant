@@ -27,6 +27,10 @@ Future<vm.CaseDetail> createCaseAPI(vm.CaseCreate caseData) async {
   return vm.CaseDetail.fromJSON(response as Map<String, dynamic>);
 }
 
+Future<void> deleteCaseAPI(dynamic caseId) async {
+  await dioRequest.delete("${HttpContants.CASE_DETAIL}$caseId");
+}
+
 
 
 

@@ -70,6 +70,42 @@ class _CaseDetailState extends State<CaseDetail> {
     }
   }
 
+  Future<void> _deleteCase() async {
+    if (_caseId == null) return;
+    
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("确认删除"),
+        content: const Text("删除后将无法恢复，确定要删除这个案件吗？"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("取消"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text("删除", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    try {
+      await deleteCaseAPI(_caseId);
+      if (mounted) {
+        Toastutils.showToast(context, "删除成功");
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        Toastutils.showToast(context, "删除失败: ${e}");
+      }
+    }
+  }
+
   Future<void> _createMaterial({
     required String name,
     required String category,
@@ -238,6 +274,11 @@ class _CaseDetailState extends State<CaseDetail> {
         backgroundColor: const Color(0xFFF5F7FA),
         appBar: AppBar(
           actions: [
+            //删除
+            IconButton(
+              onPressed: _deleteCase,
+              icon: const Icon(Icons.delete_outline, color: Colors.red),
+            ),
             IconButton(
               onPressed: _showEditDialog,
               icon: const Icon(Icons.edit_note, color: Colors.blue),

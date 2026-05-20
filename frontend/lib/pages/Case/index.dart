@@ -320,6 +320,7 @@ class _CaseViewState extends State<CaseView> {
         cases: _displayCases,
         isLoading: _isLoading,
         isSearching: _isSearching,
+        onRefresh: _fetchData,
       ),
     ];
   }
