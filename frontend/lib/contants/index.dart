@@ -15,4 +15,7 @@ class HttpContants {
   static const String MATERIALS = "/materials"; // 材料CRUD接口
   static const String USER_ME = "/user/me"; // 获取当前用户信息
   static const String USER_LOGIN = "/user/login"; // 用户登录
+  static const String CHAT_MESSAGES = "/chat/messages"; // 获取聊天消息
+  static const String CHAT_MESSAGE = "/chat/message"; // 聊天消息
+  static const String CHAT_MESSAGE_STREAM = "/chat/message/stream"; // 流式聊天消息
 }

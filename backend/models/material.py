@@ -7,8 +7,8 @@ class Material(Base):
     __tablename__ = "materials"
 
     id = Column(Integer, primary_key=True, index=True)
-    case_id = Column(Integer, ForeignKey("cases.id"))  # 关联的案件ID
-    user_id = Column(Integer, ForeignKey("users.id"))  # 关联的用户ID
+    case_id = Column(Integer, ForeignKey("cases.id"))  
+    user_id = Column(Integer, ForeignKey("users.id")) 
 
     # 材料类型：case(案件材料), evidence(举证材料), payment(付款记录), notice(法院通知)
     category = Column(String, index=True) 
@@ -22,10 +22,9 @@ class Material(Base):
     # 内容字段 (对于文本或录音转文本的情况)
     content = Column(Text, nullable=True)
     
-    # 时间戳
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    # 关联关系
     case = relationship("Case")
     owner = relationship("User")

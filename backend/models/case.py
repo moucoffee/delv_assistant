@@ -23,5 +23,5 @@ class Case(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    # 关联到用户
     owner = relationship("User", back_populates="cases")
+    chat_messages = relationship("ChatMessage", back_populates="case", cascade="all, delete-orphan")

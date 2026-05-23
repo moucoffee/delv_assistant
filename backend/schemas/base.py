@@ -6,7 +6,6 @@ T = TypeVar("T")
 class BaseResponse(BaseModel, Generic[T]):
     code: int = 1
     msg: str = "操作成功"
-    # 修改点：result 可以是单个对象 T，也可以是对象列表 List[T]
     result: Union[T, List[T], None] = None
 
     @classmethod

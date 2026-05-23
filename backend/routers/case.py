@@ -2,11 +2,13 @@ from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import List, Optional
+import os
 from schemas.case import CaseItem, CaseDetail, CaseUpdate, CaseCreate
 from schemas.base import BaseResponse
 from config.database import get_db
 from models.case import Case
 from models.material import Material
+from models.chat import ChatMessage
 from models.user import User
 from utils.deps import get_current_user
 
@@ -160,7 +162,21 @@ async def delete_case(
     if not case_obj:
         raise HTTPException(status_code=404, detail="案件不存在")
     
+    materials = db.query(Material).filter(Material.case_id == case_id).all()
+    
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for mat in materials:
+        if mat.file_url:
+            file_path = os.path.join(BASE_DIR, mat.file_url.lstrip("/"))
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except:
+                    pass
+    
     db.query(Material).filter(Material.case_id == case_id).delete()
+    
+    db.query(ChatMessage).filter(ChatMessage.case_id == case_id).delete()
     
     db.delete(case_obj)
     db.commit()

@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import HTTPBearer
-from routers import user, case, material, upload
+from routers import user, case, material, upload, chat
 from config.database import engine, Base, SessionLocal
-from models import user as user_model, case as case_model, material as material_model
+from models import user as user_model, case as case_model, material as material_model, chat as chat_model
 from models.user import User
 from models.case import Case
 from utils.auth import get_password_hash
@@ -90,10 +90,10 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # 允许所有来源，开发环境可以这样设置
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"], # 允许所有方法
-    allow_headers=["*"], # 允许所有请求头
+    allow_methods=["*"], 
+    allow_headers=["*"],
 )
 
 # 包含模块路由
@@ -101,6 +101,7 @@ app.include_router(user.router)
 app.include_router(case.router)
 app.include_router(material.router)
 app.include_router(upload.router)
+app.include_router(chat.router)
 
 @app.get("/")
 async def root():

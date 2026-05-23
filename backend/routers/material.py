@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+import os
 from config.database import get_db
 from models.material import Material as MaterialModel
 from models.case import Case as CaseModel
@@ -80,6 +81,19 @@ async def delete_material(material_id: int, db: Session = Depends(get_db)):
     material = db.query(MaterialModel).filter(MaterialModel.id == material_id).first()
     if not material:
         raise HTTPException(status_code=404, detail="材料不存在")
+    
+    if material.file_url:
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = os.path.join(BASE_DIR, material.file_url.lstrip("/"))
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except:
+                pass
+    
+    case = db.query(CaseModel).filter(CaseModel.id == material.case_id).first()
+    if case and case.material_count > 0:
+        case.material_count = case.material_count - 1
     
     db.delete(material)
     db.commit()

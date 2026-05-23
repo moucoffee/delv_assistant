@@ -13,5 +13,5 @@ class User(Base):
     coins = Column(Integer, default=0)
     trial_days = Column(Integer, default=0)
     
-    # 一个用户可以有多个案件
     cases = relationship("Case", back_populates="owner")
+    chat_messages = relationship("ChatMessage", back_populates="user", cascade="all, delete-orphan")

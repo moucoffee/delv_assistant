@@ -1,9 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
 
-# 使用 SQLite 数据库，数据文件名为 sql_app.db
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'sql_app.db')}"
 
 # connect_args={"check_same_thread": False} 仅对 SQLite 是必须的
 engine = create_engine(
@@ -14,7 +15,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# 获取数据库会话的依赖
 def get_db():
     db = SessionLocal()
     try:

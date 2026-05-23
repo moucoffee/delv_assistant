@@ -9,6 +9,7 @@ import 'package:frontend/components/CaseDetail/BottomNavigation.dart';
 import 'package:frontend/components/CaseDetail/EditCaseDialog.dart';
 import 'package:frontend/components/CaseDetail/CategoryPicker.dart';
 import 'package:frontend/components/CaseDetail/TextInputDialog.dart';
+import 'package:frontend/components/CaseDetail/ChatDialog.dart';
 import 'package:frontend/utils/ToastUtils.dart';
 import 'package:frontend/viewmodels/case.dart' as vm;
 
@@ -266,6 +267,15 @@ class _CaseDetailState extends State<CaseDetail> {
     }
   }
 
+  Future<void> _showChatDialog() async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ChatDialog(caseId: _caseId is int ? _caseId as int : null),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -311,7 +321,7 @@ class _CaseDetailState extends State<CaseDetail> {
           },
           onMicTap: () => Toastutils.showToast(context, "录音开发中..."),
           onImageTap: _handleImageUpload,
-          onChatTap: () => Toastutils.showToast(context, "AI对话开发中..."),
+          onChatTap: _showChatDialog,
           onTextTap: _showTextInputDialog,
           onFileTap: _handleFileUpload,
         ),

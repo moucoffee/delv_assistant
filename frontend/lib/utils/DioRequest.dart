@@ -9,7 +9,6 @@ class DioRequest {
     _dio.options
       ..baseUrl = GlobalContants.BASE_URL
       ..connectTimeout = Duration(seconds: GlobalContants.TIME_OUT)
-      ..sendTimeout = Duration(seconds: GlobalContants.TIME_OUT)
       ..receiveTimeout = Duration(seconds: GlobalContants.TIME_OUT);
 
     _getInterceptor();
